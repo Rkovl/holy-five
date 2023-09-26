@@ -12,6 +12,7 @@ export default function Home() {
   const [timeStatic, setTimeStatic] = useState(new Date().toLocaleTimeString('en-US',{hour12: false}))
   const [playerLocation, setPlayerLocation] = useState(0)
 
+
   //USE EFFECT--------------------------------------------------------------------
   useEffect(() => {
     let secTimer = setInterval( () => {
@@ -23,35 +24,59 @@ export default function Home() {
     return () => clearInterval(secTimer);
   }, []);
 
+  
+  let playerRoute = {
+    index:0,
+    paths:[
+      [Math.floor(Math.random() * 3),Math.floor(Math.random() * 3),Math.floor(Math.random() * 3)],
+      [Math.floor(Math.random() * 3),Math.floor(Math.random() * 3),Math.floor(Math.random() * 3)],
+      [Math.floor(Math.random() * 3),Math.floor(Math.random() * 3),Math.floor(Math.random() * 3)],
+      [Math.floor(Math.random() * 3),Math.floor(Math.random() * 3),Math.floor(Math.random() * 3)],
+      [Math.floor(Math.random() * 3),Math.floor(Math.random() * 3),Math.floor(Math.random() * 3)],
+      [Math.floor(Math.random() * 3),Math.floor(Math.random() * 3),Math.floor(Math.random() * 3)],
+      [Math.floor(Math.random() * 3),Math.floor(Math.random() * 3),Math.floor(Math.random() * 3)],
+      [Math.floor(Math.random() * 3),Math.floor(Math.random() * 3),Math.floor(Math.random() * 3)],
+      [Math.floor(Math.random() * 3),Math.floor(Math.random() * 3),Math.floor(Math.random() * 3)],
+      [9,9,9]
+    ]
+  }
+
+  const sleep = (ms)=>{
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
   //HANDLE INPUT-------------------------------------------------------------------------------
 
-  const handleInput = () =>{
+  const handleInput = async() =>{
     const inputHistory = document.querySelector('.history')
     const inputField = document.querySelector('#inputField')
     const input = inputField.value
     inputField.value = ""
     console.log(input)
-    console.log('called')
     console.log(inputHistory)
     console.log(playerLocation)
+
+    //case 0 = menu
+    //case 1 = intro
+    //case 2 = paths
     switch(playerLocation){
       case 0:
         if(input == 1){
           setPlayerLocation(1)
           clearHistory()
-          break;
+          
         }
         else if(input == 2){
-          console.log('did it work?')
-          console.log(component.Intro([timeStatic,inputHistory]))
+          inputHistory.innerHTML += `<div> input 2 feature not implemented </div>`
           break;
-
         }
         else if(input == 3){
-
+          inputHistory.innerHTML += `<div> input 3 feature not implemented </div>`
+          break;
         }
         else if(input == 4){
-
+          inputHistory.innerHTML +=`<div> input 4 feature not implemented </div>`
+          break;
         }
         else{
           console.log("did it read?")
@@ -59,7 +84,13 @@ export default function Home() {
         }
       
         case 1:
-          inputHistory.innerHTML += `<div> case 1 </div>`
+          component.Intro([timeStatic,inputHistory])
+          setPlayerLocation(2)
+          console.log('before sleep')
+          await sleep(50000)
+          console.log('dont run instant pls')
+        case 2:
+          break;
       default:
         inputHistory.innerHTML += `
         <div class="pastLine flex">
@@ -109,10 +140,3 @@ export default function Home() {
     </main>
   )
 }
-/*
-              O
-              |______________________________________
-@XXXXXXXXXXXXXX_____________HOLY FIVE_______________/
-              |
-              O
-*/
