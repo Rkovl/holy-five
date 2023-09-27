@@ -6,7 +6,7 @@ export function Intro(prop) {
          <div class="pastLine flex">
             <div class="time w-24 ">[${prop[0]}]</div>
             <div class="name w-24 text-right">Client &nbsp;</div>
-            <div class="w-full text whitespace-pre"><code>"Welcome Mighty Hero! \nA Necromance has been ravaging the lands turning fallen warriors into his minions.\nI wish you better than the ones before you"</code>
+            <div class="w-full text whitespace-pre-wrap"><code>"Welcome Mighty Hero! \nA Necromance has been ravaging the lands turning fallen warriors into his minions.\nI wish you better than the ones before you"</code>
             </div>
         </div>`
 }

@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* colors */
 .time{
   color: #EFEFAE;
 }
@@ -9,7 +10,7 @@
   color: brown;
 }
 .nameCurrent{
-  color: #EFEFAE;
+  color: olive;
 }
 .text{
   color: #EFEFAE;

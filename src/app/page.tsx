@@ -55,32 +55,52 @@ export default function Home() {
     console.log(input)
     console.log(inputHistory)
     console.log(playerLocation)
+    const notMade = (feature) =>{
+      inputHistory.innerHTML += `
+      <div class="pastLine flex">
+        <div class="time w-24 ">[${timeStatic}]</div>
+        <div class="name w-24 text-right">&nbsp;&nbsp;Client&nbsp;</div>
+        <div class="w-full text whitespace-nowrap">  
+            ${feature} feature is not implemented
+        </div>
+      </div>`
+    }
+    const invalidInput = () =>{
+      inputHistory.innerHTML += `
+      <div class="pastLine flex">
+        <div class="time w-24 ">[${timeStatic}]</div>
+        <div class="name w-24 text-right">&nbsp;&nbsp;Client&nbsp;</div>
+        <div class="w-full text whitespace-nowrap">  
+          Unrecognised command '${input}'
+        </div>
+      </div>`
+    }
 
     //case 0 = menu
     //case 1 = intro
     //case 2 = paths
     switch(playerLocation){
       case 0:
-        if(input == 1){
+        if(input === "1"){
           setPlayerLocation(1)
           clearHistory()
           
         }
-        else if(input == 2){
-          inputHistory.innerHTML += `<div> input 2 feature not implemented </div>`
+        else if(input === "2"){
+          notMade('Load')
           break;
         }
-        else if(input == 3){
-          inputHistory.innerHTML += `<div> input 3 feature not implemented </div>`
+        else if(input === "3"){
+          notMade('Help')
           break;
         }
-        else if(input == 4){
-          inputHistory.innerHTML +=`<div> input 4 feature not implemented </div>`
+        else if(input === "4"){
+          notMade('Exit')
           break;
         }
         else{
-          console.log("did it read?")
-          inputHistory.innerHTML += `<div> case 0 else </div>`
+          invalidInput()
+          break;
         }
       
         case 1:
@@ -92,14 +112,7 @@ export default function Home() {
         case 2:
           break;
       default:
-        inputHistory.innerHTML += `
-        <div class="pastLine flex">
-          <div class="time w-24 ">[${timeStatic}]</div>
-          <div class="name w-24 text-right">&nbsp;&nbsp;Client&nbsp;</div>
-          <div class="w-full text whitespace-nowrap">  
-              ${input} ERROR IS NOT A VALID INPUT
-          </div>
-        </div>`
+
     }
   }
 
@@ -112,7 +125,7 @@ export default function Home() {
     <main className="">
       <div className='history'>
         <div className="pastLine flex  ">
-          <div className="time w-24 ">[{timeStatic}]</div>
+          <div suppressHydrationWarning className="time w-24 ">[{timeStatic}]</div>
           <div className="name w-24 text-right">Client &nbsp;</div>
           <div className="w-full text whitespace-pre">  
               <code>{` __   __  _______  ___      __   __    _______  ___   __   __  _______ 
@@ -131,10 +144,10 @@ export default function Home() {
         </div>
       </div>
 
-      
+
       <div className="editline bg-zinc-800 flex">
-        <div className="time w-24 ">[{timeCurrent}]</div>
-        <div className="nameCurrent w-24 text-right">&gt; &nbsp;</div>
+        <div suppressHydrationWarning className="time w-24 ">[{timeCurrent}]</div>
+        <div className="nameCurrent w-24 text-right">User &gt; &nbsp;</div>
         <input type='text' id='inputField' onKeyUp={e=>{if(e.key==="Enter"){handleInput();setTimeStatic(timeCurrent);}}} className="w-full appearance-none text bg-zinc-800 outline-none "></input>
       </div>
     </main>
