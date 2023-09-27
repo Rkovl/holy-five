@@ -26,17 +26,17 @@ export default function Home() {
 
   
   let playerRoute = {
-    index:0,
+    index: 0,
     paths:[
-      [Math.floor(Math.random() * 3),Math.floor(Math.random() * 3),Math.floor(Math.random() * 3)],
-      [Math.floor(Math.random() * 3),Math.floor(Math.random() * 3),Math.floor(Math.random() * 3)],
-      [Math.floor(Math.random() * 3),Math.floor(Math.random() * 3),Math.floor(Math.random() * 3)],
-      [Math.floor(Math.random() * 3),Math.floor(Math.random() * 3),Math.floor(Math.random() * 3)],
-      [Math.floor(Math.random() * 3),Math.floor(Math.random() * 3),Math.floor(Math.random() * 3)],
-      [Math.floor(Math.random() * 3),Math.floor(Math.random() * 3),Math.floor(Math.random() * 3)],
-      [Math.floor(Math.random() * 3),Math.floor(Math.random() * 3),Math.floor(Math.random() * 3)],
-      [Math.floor(Math.random() * 3),Math.floor(Math.random() * 3),Math.floor(Math.random() * 3)],
-      [Math.floor(Math.random() * 3),Math.floor(Math.random() * 3),Math.floor(Math.random() * 3)],
+      [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+      [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+      [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+      [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+      [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+      [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+      [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+      [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+      [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
       [9,9,9]
     ]
   }
@@ -75,6 +75,10 @@ export default function Home() {
         </div>
       </div>`
     }
+    if(input == '/reset'){
+      setPlayerLocation(0)
+      clearHistory()
+    }
 
     //case 0 = menu
     //case 1 = intro
@@ -96,6 +100,7 @@ export default function Home() {
         }
         else if(input === "4"){
           notMade('Exit')
+         
           break;
         }
         else{
@@ -104,15 +109,17 @@ export default function Home() {
         }
       
         case 1:
-          component.Intro([timeStatic,inputHistory])
+          component.Intro({time:timeStatic,history:inputHistory})
           setPlayerLocation(2)
-          console.log('before sleep')
-          await sleep(50000)
-          console.log('dont run instant pls')
+          await sleep(2000)
+          console.log('after sleep')
+          component.Paths({time:timeStatic,history:inputHistory,route:playerRoute.paths[playerRoute.index]})
+          playerRoute.index + 1
+          
         case 2:
           break;
       default:
-
+        console.error('player location is in unexpected area')
     }
   }
 
