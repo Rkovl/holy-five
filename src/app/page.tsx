@@ -27,6 +27,9 @@ export default function Home() {
   
   let playerRoute = {
     index: 0,
+    action:[
+      {location:3,text:component.Combat({time:timeStatic,history:inputHistory,enemy:enemy})}
+    ]
     paths:[
       [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
       [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
@@ -117,6 +120,19 @@ export default function Home() {
           playerRoute.index + 1
           
         case 2:
+          if(input === "1"){
+            
+          }
+          else if(input === "2"){
+
+          }
+          else if(input === "3"){
+
+          }
+          else{
+            invalidInput()
+            break;
+          }
           break;
       default:
         console.error('player location is in unexpected area')
