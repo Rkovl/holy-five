@@ -19,7 +19,6 @@
 //   }
 //   const mycar = new Model("Ford", "Mustang");
 //   mycar.show();
-  
 class Character{
     name: string
     health: number

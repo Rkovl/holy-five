@@ -24,6 +24,7 @@ export default function Home() {
     [9,9,9]
   ])
   const [playerRouteIndex, setplayerRouteIndex] = useState(0)
+  const [inCombat, setInCombat] = useState(false)
 
 
   //USE EFFECT--------------------------------------------------------------------
@@ -185,6 +186,58 @@ export default function Home() {
           }
           setplayerRouteIndex(playerRouteIndex+1)
           break;
+        
+      case 3:
+        if(!inCombat && input == 2) {
+          setPlayerLocation(2)
+          component.Paths({time:timeStatic,history:inputHistory,route:playerRouteArr[playerRouteIndex]})
+          break;
+        }
+        else if(!inCombat && input == 1){
+          setInCombat(true)
+        }
+        else if(!inCombat){
+          invalidInput()
+          break;
+        }
+        if(input == "1"){
+          console.log("attack")
+          //attacking = true
+        }
+        else if(input == "2"){
+          console.log("use item")
+        }
+        else if(input == "3"){
+          console.log("flee")
+        }
+        else{
+          invalidInput()
+        }
+        //if attacking ==true
+        //enemy.attack()
+      //   let didYouWin = {
+      //     'X':'C',
+      //     'Y':'A',
+      //     'Z':'B'
+      // }
+    //   if(didYouTie[yourHand] == oppHand){
+    //     totalScore += 3
+    // }
+    // else if(didYouWin[yourHand] == oppHand){
+    //     totalScore += 6
+    // }
+
+        //COMBAT STARTS HERE--------------------------------------------
+        //get player data and enemy data
+        //give options of attack, use item* or flee
+        //if attack give option of planned, powerful or defensive attack
+        //opponient will then pick
+        //will then determin advantage, draw or disadvantage
+        //damage calculations
+        //alive check
+        //loop back to "attack, use item or flee" option or calculate reward
+        //go back to paths
+        //if flee also go back to paths
       default:
         console.error('player location is in unexpected area')
     }
