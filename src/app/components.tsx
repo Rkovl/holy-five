@@ -30,3 +30,16 @@ export function Paths(props){
         </div>
       </div> `
 }
+
+export function Combat(props) {
+    props.history.innerHTML =`
+         <div class="pastLine flex">
+            <div class="time w-24 ">[${props.time}]</div>
+            <div class="name w-24 text-right">Client &nbsp;</div>
+            <div class="w-full text whitespace-pre-wrap">
+<code>You manage to find yourself amongst the enemy!!
+1.) Attack!
+2.) Flee!!</code>
+            </div>
+        </div>`
+}

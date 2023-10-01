@@ -11,6 +11,19 @@ export default function Home() {
   const [timeCurrent, setTimeCurrent] = useState('')
   const [timeStatic, setTimeStatic] = useState(new Date().toLocaleTimeString('en-US',{hour12: false}))
   const [playerLocation, setPlayerLocation] = useState(0)
+  const [playerRouteArr, setPlayerRouteArr] = useState([
+    [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+    [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+    [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+    [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+    [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+    [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+    [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+    [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+    [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+    [9,9,9]
+  ])
+  const [playerRouteIndex, setplayerRouteIndex] = useState(0)
 
 
   //USE EFFECT--------------------------------------------------------------------
@@ -37,6 +50,8 @@ export default function Home() {
     const input = inputField.value
     inputField.value = ""
 
+    console.log("Input",input," Player Location", playerLocation)
+
     //In use dev door and catchall
     const notMade = (feature) =>{
       inputHistory.innerHTML += `
@@ -59,16 +74,40 @@ export default function Home() {
       </div>`
     }
 
-    let playerRoute = {
+    const playerRouteAction = (selection)=>{
+      console.log("Player route Action Selection",selection)
+      if(selection == 6){
+        selection = Math.floor(Math.random() * 5)
+      }
+      switch (selection) {
+        case 0:
+          setPlayerLocation(3);
+          component.Combat({time:timeStatic,history:inputHistory})
+          break;
+
+        case 1:
+          notMade('Shop')
+          break;
+        
+        case 2:
+          notMade('Boon')
+          break;
+      
+        case 3:
+          notMade('Risk')
+          break;
+
+        case 4:
+          notMade('Elite Combat')
+          break;
+      
+        default:
+          invalidInput()
+          break;
+      }
+    }
+    const playerRoute = {
       index: 0,
-      action:[
-        {location:3,text:component.Combat({time:timeStatic,history:inputHistory,enemy:enemy})},
-        (function(){notMade('Shop')})(),
-        (function(){notMade('Boon')})(),
-        (function(){notMade('Risk')})(),
-        (function(){notMade('Elite Combat')})(),
-        (function(){this.action[Math.floor(Math.random() * 5)]})()
-      ],
       //path 0 = Combat
       //path 1 = Shop
       //path 2 = Boon
@@ -127,23 +166,24 @@ export default function Home() {
         setPlayerLocation(2)
         await sleep(2000)
         console.log('after sleep')
-        component.Paths({time:timeStatic,history:inputHistory,route:playerRoute.paths[playerRoute.index]})
-        playerRoute.index + 1
+        console.log("inCase 1 with route",playerRouteArr[playerRouteIndex])
+        component.Paths({time:timeStatic,history:inputHistory,route:playerRouteArr[playerRouteIndex]})
+        console.log(playerRouteArr)
+        break;
         
       case 2:
-          if(input === "1"){
-            playerRoute.paths[0][0]
-          }
-          else if(input === "2"){
-
-          }
-          else if(input === "3"){
-
+        console.log("inside player location case 2", "input is", input)
+        console.log(playerRouteArr)
+        console.log(playerRouteArr[playerRouteIndex],playerRouteIndex, input-1)
+          if(input>0 && input<4){
+            playerRouteAction(playerRouteArr[playerRouteIndex][input-1])
           }
           else{
+            console.log("is being called?")
             invalidInput()
             break;
           }
+          setplayerRouteIndex(playerRouteIndex+1)
           break;
       default:
         console.error('player location is in unexpected area')
