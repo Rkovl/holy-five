@@ -24,25 +24,6 @@ export default function Home() {
     return () => clearInterval(secTimer);
   }, []);
 
-  
-  let playerRoute = {
-    index: 0,
-    action:[
-      {location:3,text:component.Combat({time:timeStatic,history:inputHistory,enemy:enemy})}
-    ]
-    paths:[
-      [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
-      [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
-      [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
-      [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
-      [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
-      [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
-      [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
-      [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
-      [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
-      [9,9,9]
-    ]
-  }
 
   const sleep = (ms)=>{
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -55,9 +36,8 @@ export default function Home() {
     const inputField = document.querySelector('#inputField')
     const input = inputField.value
     inputField.value = ""
-    console.log(input)
-    console.log(inputHistory)
-    console.log(playerLocation)
+
+    //In use dev door and catchall
     const notMade = (feature) =>{
       inputHistory.innerHTML += `
       <div class="pastLine flex">
@@ -78,6 +58,37 @@ export default function Home() {
         </div>
       </div>`
     }
+
+    let playerRoute = {
+      index: 0,
+      action:[
+        {location:3,text:component.Combat({time:timeStatic,history:inputHistory,enemy:enemy})},
+        (function(){notMade('Shop')})(),
+        (function(){notMade('Boon')})(),
+        (function(){notMade('Risk')})(),
+        (function(){notMade('Elite Combat')})(),
+        (function(){this.action[Math.floor(Math.random() * 5)]})()
+      ],
+      //path 0 = Combat
+      //path 1 = Shop
+      //path 2 = Boon
+      //path 3 = Risk
+      //path 4 = Elite Combat
+      //path 5 = Any
+      paths:[
+        [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+        [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+        [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+        [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+        [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+        [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+        [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+        [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+        [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+        [9,9,9]
+      ]
+    }
+
     if(input == '/reset'){
       setPlayerLocation(0)
       clearHistory()
@@ -110,18 +121,18 @@ export default function Home() {
           invalidInput()
           break;
         }
-      
-        case 1:
-          component.Intro({time:timeStatic,history:inputHistory})
-          setPlayerLocation(2)
-          await sleep(2000)
-          console.log('after sleep')
-          component.Paths({time:timeStatic,history:inputHistory,route:playerRoute.paths[playerRoute.index]})
-          playerRoute.index + 1
-          
-        case 2:
+    
+      case 1:
+        component.Intro({time:timeStatic,history:inputHistory})
+        setPlayerLocation(2)
+        await sleep(2000)
+        console.log('after sleep')
+        component.Paths({time:timeStatic,history:inputHistory,route:playerRoute.paths[playerRoute.index]})
+        playerRoute.index + 1
+        
+      case 2:
           if(input === "1"){
-            
+            playerRoute.paths[0][0]
           }
           else if(input === "2"){
 

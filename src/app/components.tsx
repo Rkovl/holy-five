@@ -16,8 +16,8 @@ export function Paths(props){
     "There seems to be a building set up over there",
     "I feel a good about this path",
     "The path looks shaky over there",
-    "The road is quite plan",
-    "The Stench of evil is down that path"]
+    "The Stench of evil is down that path",
+    "The road is quite plan"]
     props.history.innerHTML +=`
         <div class="pastLine flex">
         <div class="time w-24 ">[${props.time}]</div>

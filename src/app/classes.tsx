@@ -21,28 +21,31 @@
 //   mycar.show();
   
 class Character{
-    name!: string
-    health!: number
-    maxHealth!: number
-    power!: number
-    dodge!: number
-    gold!: number
+    name: string
+    health: number
+    maxHealth: number
+    power: number
+    armor: number
+    dodge: number
+    gold: number
+    inventory: []
     constructor(name:string,health:number,power:number,armor:number,dodge:number,gold:number){
-        self.name = name
-        self.health = health
-        self.maxHealth = health
-        self.power = power
-        self.armor = armor
-        self.dodge = dodge
-        self.gold = gold
+        this.name = name
+        this.health = health
+        this.maxHealth = health
+        this.power = power
+        this.armor = armor
+        this.dodge = dodge
+        this.gold = gold
+        this.inventory = []
     }
     alive() {
-        if(self.health > 0)return true
+        if(this.health > 0)return true
         else return false
     }
     status(){
-        return `${self.name}   -   ${self.health} health
-        ${self.power} power  -   ${self.armor} armor  -   ${self.dodge} dodge`
+        return `${this.name}   -   ${this.health} health
+        ${this.power} power  -   ${this.armor} armor  -   ${this.dodge} dodge`
     }
     choice(){
         return Math.floor(Math.random() * 3)
@@ -50,13 +53,20 @@ class Character{
 }
 
 class Item {
+    name : string;
+    value : number;
+    type : number;
+    increment : number
+    incrementType : string
+    description : string
+
     constructor(name:string,value:number,type:number,increment:number,incrementType:string,description:string){
-        self.name = name;
-        self.value = value;
-        self.type = type;
-        self.increment = increment
-        self.incrementType = incrementType
-        self.description = description
+        this.name = name;
+        this.value = value;
+        this.type = type;
+        this.increment = increment
+        this.incrementType = incrementType
+        this.description = description
     }
     equip(){
 
