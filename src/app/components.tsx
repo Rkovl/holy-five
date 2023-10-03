@@ -1,7 +1,8 @@
 //prop[0] is time
 //prop[1] is inputHistory
 
-export function Intro(props) {
+
+export function Intro(props:{time:string,history:{innerHTML:string}}) {
     props.history.innerHTML =`
          <div class="pastLine flex">
             <div class="time w-24 ">[${props.time}]</div>
@@ -11,7 +12,7 @@ export function Intro(props) {
         </div>`
 }
 
-export function Paths(props){
+export function Paths(props:{time:string,history:{innerHTML:string},route:number[]}){
     let paths = ["I feel ominous presence over there",
     "There seems to be a building set up over there",
     "I feel a good about this path",
@@ -31,7 +32,7 @@ export function Paths(props){
       </div> `
 }
 
-export function Combat(props) {
+export function CombatIntro(props:{time:string,history:{innerHTML:string}}) {
     props.history.innerHTML =`
          <div class="pastLine flex">
             <div class="time w-24 ">[${props.time}]</div>
@@ -42,4 +43,18 @@ export function Combat(props) {
 2.) Flee!!</code>
             </div>
         </div>`
+}
+
+export function CombatInitial(props:{time:string,history:{innerHTML:string}}){
+    props.history.innerHTML +=`
+        <div class="pastLine flex">
+        <div class="time w-24 ">[${props.time}]</div>
+        <div class="name w-24 text-right">Client &nbsp;</div>
+        <div class="w-full text whitespace-pre">  
+<code>There lies before you are three branching paths
+1.) Attack
+2.) Use Item
+3.) Flee</code>
+        </div>
+      </div> `
 }

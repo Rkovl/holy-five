@@ -3,6 +3,7 @@
 //IMPORTS--------------------------------------------------------------------
 import React,{useEffect, useState} from 'react';
 import * as component from './components'
+import { enemy, player } from './classes';
 
 //EXPORT---------------------------------------------------------------------
 export default function Home() {
@@ -12,7 +13,7 @@ export default function Home() {
   const [timeStatic, setTimeStatic] = useState(new Date().toLocaleTimeString('en-US',{hour12: false}))
   const [playerLocation, setPlayerLocation] = useState(0)
   const [playerRouteArr, setPlayerRouteArr] = useState([
-    [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+    [Math.floor(Math.random() * 1),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
     [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
     [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
     [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
@@ -83,7 +84,7 @@ export default function Home() {
       switch (selection) {
         case 0:
           setPlayerLocation(3);
-          component.Combat({time:timeStatic,history:inputHistory})
+          component.CombatIntro({time:timeStatic,history:inputHistory})
           break;
 
         case 1:
@@ -106,27 +107,6 @@ export default function Home() {
           invalidInput()
           break;
       }
-    }
-    const playerRoute = {
-      index: 0,
-      //path 0 = Combat
-      //path 1 = Shop
-      //path 2 = Boon
-      //path 3 = Risk
-      //path 4 = Elite Combat
-      //path 5 = Any
-      paths:[
-        [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
-        [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
-        [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
-        [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
-        [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
-        [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
-        [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
-        [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
-        [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
-        [9,9,9]
-      ]
     }
 
     if(input == '/reset'){
@@ -188,13 +168,28 @@ export default function Home() {
           break;
         
       case 3:
+        const didYouWin = {
+          "0":2,
+          "1":0,
+          "2":1
+        }
+        const didYouLose = {
+          "2":0,
+          "0":1,
+          "1":2
+        }
+        let attacking = false
         if(!inCombat && input == 2) {
+          console.log("flee selected")
           setPlayerLocation(2)
           component.Paths({time:timeStatic,history:inputHistory,route:playerRouteArr[playerRouteIndex]})
           break;
         }
         else if(!inCombat && input == 1){
+          console.log("attack selected")
+          component.CombatInitial({time:timeStatic,history:inputHistory})
           setInCombat(true)
+          break;
         }
         else if(!inCombat){
           invalidInput()
@@ -202,7 +197,7 @@ export default function Home() {
         }
         if(input == "1"){
           console.log("attack")
-          //attacking = true
+          attacking = true
         }
         else if(input == "2"){
           console.log("use item")
@@ -213,19 +208,24 @@ export default function Home() {
         else{
           invalidInput()
         }
-        //if attacking ==true
-        //enemy.attack()
-      //   let didYouWin = {
-      //     'X':'C',
-      //     'Y':'A',
-      //     'Z':'B'
-      // }
-    //   if(didYouTie[yourHand] == oppHand){
-    //     totalScore += 3
-    // }
-    // else if(didYouWin[yourHand] == oppHand){
-    //     totalScore += 6
-    // }
+        
+        if(attacking == true){
+          if(enemy.attack() == input){
+            console.log("tie")
+          }
+          else if(enemy.attack() == didYouWin[input]){
+            enemy.health - player.power
+            console.log("youwin","enemyhealth",enemy.health, "damage",player.power)
+          }
+          else if(enemy.attack() == didYouLose[input]){
+            player.health - enemy.power
+            console.log("you lose","playerhealth", player.health, "damage", enemy.power)
+          }
+          else{
+            invalidInput()
+            break
+          }
+        }
 
         //COMBAT STARTS HERE--------------------------------------------
         //get player data and enemy data

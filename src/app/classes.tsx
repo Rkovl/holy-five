@@ -46,8 +46,8 @@ class Character{
         return `${this.name}   -   ${this.health} health
         ${this.power} power  -   ${this.armor} armor  -   ${this.dodge} dodge`
     }
-    choice(){
-        return Math.floor(Math.random() * 3)
+    attack(){
+        return Math.floor(Math.random() * 3+1)
     }
 }
 
@@ -74,3 +74,6 @@ class Item {
 
     }
 }
+
+export const enemy = new Character("Goblin", 10,2,1,1,10)
+export const player = new Character("Hero",10,2,1,1,10)
