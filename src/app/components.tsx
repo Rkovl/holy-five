@@ -1,6 +1,8 @@
 //prop[0] is time
 //prop[1] is inputHistory
 
+import { Character } from "./classes"
+
 
 export function Intro(props:{time:string,history:{innerHTML:string}}) {
     props.history.innerHTML =`
@@ -37,8 +39,7 @@ export function CombatIntro(props:{time:string,history:{innerHTML:string}}) {
          <div class="pastLine flex">
             <div class="time w-24 ">[${props.time}]</div>
             <div class="name w-24 text-right">Client &nbsp;</div>
-            <div class="w-full text whitespace-pre-wrap">
-<code>You manage to find yourself amongst the enemy!!
+            <div class="w-full text whitespace-pre-wrap"><code>You manage to find yourself amongst the enemy!!
 1.) Attack!
 2.) Flee!!</code>
             </div>
@@ -50,11 +51,34 @@ export function CombatInitial(props:{time:string,history:{innerHTML:string}}){
         <div class="pastLine flex">
         <div class="time w-24 ">[${props.time}]</div>
         <div class="name w-24 text-right">Client &nbsp;</div>
-        <div class="w-full text whitespace-pre">  
-<code>There lies before you are three branching paths
+        <div class="w-full text whitespace-pre"><code> Shall you smite your foe? Do you have something to help you? Is this not the time for this?
 1.) Attack
 2.) Use Item
 3.) Flee</code>
+        </div>
+      </div> `
+}
+
+export function CombatAttack(props:{time:string,history:{innerHTML:string}}){
+    props.history.innerHTML +=`
+        <div class="pastLine flex">
+        <div class="time w-24 ">[${props.time}]</div>
+        <div class="name w-24 text-right">Client &nbsp;</div>
+        <div class="w-full text whitespace-pre"><code>What approach should one take to this bout?
+1.) Aggressive Attack
+2.) Defensive Attack
+3.) Calculated Attack</code>
+        </div>
+      </div> `
+}
+
+export function Status(props:{time:string,history:{innerHTML:string},character:Character}){
+    props.history.innerHTML +=`
+        <div class="pastLine flex">
+        <div class="time w-24 ">[${props.time}]</div>
+        <div class="name w-24 text-right">Client &nbsp;</div>
+        <div class="w-full text whitespace-pre"><code>${props.character.name}   -   ${props.character.health} health
+${props.character.power} power  -   ${props.character.armor} armor  -   ${props.character.dodge} dodge</code>
         </div>
       </div> `
 }

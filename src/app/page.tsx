@@ -3,7 +3,7 @@
 //IMPORTS--------------------------------------------------------------------
 import React,{useEffect, useState} from 'react';
 import * as component from './components'
-import { enemy, player } from './classes';
+import { enemy, player, enemyArr, Character } from './classes';
 
 //EXPORT---------------------------------------------------------------------
 export default function Home() {
@@ -25,7 +25,10 @@ export default function Home() {
     [9,9,9]
   ])
   const [playerRouteIndex, setplayerRouteIndex] = useState(0)
+  const [hero, setHero] = useState(player)
+  const [enemy, setEnemy] = useState()
   const [inCombat, setInCombat] = useState(false)
+  const [attacking, setAttacking] = useState(false)
 
 
   //USE EFFECT--------------------------------------------------------------------
@@ -84,6 +87,9 @@ export default function Home() {
       switch (selection) {
         case 0:
           setPlayerLocation(3);
+          // let enemyIndex = Math.floor(Math.random() * enemyArr.length)
+          // let hold = enemyArr[enemyIndex]
+          setEnemy(enemyArr[Math.floor(Math.random() * enemyArr.length)])
           component.CombatIntro({time:timeStatic,history:inputHistory})
           break;
 
@@ -169,16 +175,51 @@ export default function Home() {
         
       case 3:
         const didYouWin = {
-          "0":2,
-          "1":0,
-          "2":1
+          "1":3,
+          "2":1,
+          "3":2
         }
         const didYouLose = {
-          "2":0,
-          "0":1,
-          "1":2
+          "3":1,
+          "1":2,
+          "2":3
         }
-        let attacking = false
+        const combatLoop = () =>{
+          if(hero.alive() == false || enemy.alive() == false){
+            if(hero.alive() == false){
+              clearHistory()
+              setPlayerLocation(1)
+              setplayerRouteIndex(0)
+              setPlayerRouteArr([
+                [Math.floor(Math.random() * 1),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+                [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+                [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+                [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+                [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+                [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+                [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+                [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+                [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
+                [9,9,9]
+              ])
+              setHero(player)
+              notMade("press anything to contine")
+            }
+            else{
+              notMade("enemy died")
+              hero.gold = hero.gold + enemy.gold
+              setHero(hero)
+            }
+          }
+          else{
+            component.Status({time:timeStatic,history:inputHistory,character:player})
+            component.Status({time:timeStatic,history:inputHistory,character:enemy})
+            component.CombatInitial({time:timeStatic,history:inputHistory})
+          }
+          setAttacking(false)
+        }
+
+        //Pre Combat screen------------------------------------
         if(!inCombat && input == 2) {
           console.log("flee selected")
           setPlayerLocation(2)
@@ -189,42 +230,63 @@ export default function Home() {
           console.log("attack selected")
           component.CombatInitial({time:timeStatic,history:inputHistory})
           setInCombat(true)
+          component.Status({time:timeStatic,history:inputHistory,character:player})
+          component.Status({time:timeStatic,history:inputHistory,character:enemy})
           break;
         }
         else if(!inCombat){
           invalidInput()
           break;
         }
-        if(input == "1"){
-          console.log("attack")
-          attacking = true
+
+        //Attack, Use Item or Flee---------------------------
+        if(attacking == false){
+          if(input == "1"){
+            component.CombatAttack({time:timeStatic,history:inputHistory})
+            setAttacking(true)
+            break
+          }
+          else if(input == "2"){
+            notMade("use item")
+          }
+          else if(input == "3"){
+            notMade("flee")
+          }
+          else{
+            console.log("invald input in attacking == false")
+            invalidInput()
+          }
         }
-        else if(input == "2"){
-          console.log("use item")
-        }
-        else if(input == "3"){
-          console.log("flee")
-        }
-        else{
-          invalidInput()
-        }
+
         
         if(attacking == true){
           if(enemy.attack() == input){
             console.log("tie")
+            clearHistory()
+            combatLoop()
+            break;
           }
           else if(enemy.attack() == didYouWin[input]){
-            enemy.health - player.power
-            console.log("youwin","enemyhealth",enemy.health, "damage",player.power)
+            enemy.health = enemy.health - hero.power
+            setEnemy(enemy)
+            console.log("youwin","enemyhealth",enemy.health, "damage",hero.power)
+            clearHistory()
+            combatLoop()
+            break;
           }
           else if(enemy.attack() == didYouLose[input]){
-            player.health - enemy.power
-            console.log("you lose","playerhealth", player.health, "damage", enemy.power)
+            hero.health = hero.health - enemy.power
+            setHero(hero)
+            console.log("you lose","playerhealth", hero.health, "damage", enemy.power)
+            clearHistory()
+            combatLoop()
+            break;
           }
-          else{
-            invalidInput()
-            break
-          }
+          // else{
+          //   console.log("invlaid input in attacking == true", input, enemy.attack())
+          //   invalidInput()
+          //   break;
+          // }
         }
 
         //COMBAT STARTS HERE--------------------------------------------

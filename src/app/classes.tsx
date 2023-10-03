@@ -19,7 +19,7 @@
 //   }
 //   const mycar = new Model("Ford", "Mustang");
 //   mycar.show();
-class Character{
+export class Character{
     name: string
     health: number
     maxHealth: number
@@ -50,8 +50,19 @@ class Character{
         return Math.floor(Math.random() * 3+1)
     }
 }
-
-class Item {
+class Rat extends Character{
+    constructor(name:string,health:number,power:number,armor:number,dodge:number,gold:number) {
+      super(name,health,power,armor,dodge,gold);
+    }  
+    attack(){
+        let hold = Math.floor(Math.random() * 100+1)
+        if(hold <65){hold = 1}
+        else if(hold < 90){hold = 2}
+        else{hold = 3}
+        return hold
+    }
+}
+export class Item {
     name : string;
     value : number;
     type : number;
@@ -75,5 +86,6 @@ class Item {
     }
 }
 
-export const enemy = new Character("Goblin", 10,2,1,1,10)
-export const player = new Character("Hero",10,2,1,1,10)
+export let enemyArr = [new Character("Goblin", 10,2,1,1,10), new Rat("Rat", 2,1,0,75,10)]
+export let enemy = new Character("Goblin", 10,2,1,1,10)
+export let player = new Character("Hero",10,5,1,1,10)
