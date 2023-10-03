@@ -72,6 +72,36 @@ export function CombatAttack(props:{time:string,history:{innerHTML:string}}){
       </div> `
 }
 
+export function CombatTie(props:{time:string,history:{innerHTML:string}}) {
+    props.history.innerHTML =`
+         <div class="pastLine flex">
+            <div class="time w-24 ">[${props.time}]</div>
+            <div class="name w-24 text-right">Client &nbsp;</div>
+            <div class="w-full text whitespace-pre-wrap"><code>"Both of you were well matched!"</code>
+            </div>
+        </div>`
+}
+
+export function CombatAdv(props:{time:string,history:{innerHTML:string}}) {
+    props.history.innerHTML =`
+         <div class="pastLine flex">
+            <div class="time w-24 ">[${props.time}]</div>
+            <div class="name w-24 text-right">Client &nbsp;</div>
+            <div class="w-full text whitespace-pre-wrap"><code>"You get the upper hand on your opponent"</code>
+            </div>
+        </div>`
+}
+
+export function CombatDAdv(props:{time:string,history:{innerHTML:string}}) {
+    props.history.innerHTML =`
+         <div class="pastLine flex">
+            <div class="time w-24 ">[${props.time}]</div>
+            <div class="name w-24 text-right">Client &nbsp;</div>
+            <div class="w-full text whitespace-pre-wrap"><code>"It's not looking good for you"</code>
+            </div>
+        </div>`
+}
+
 export function Status(props:{time:string,history:{innerHTML:string},character:Character}){
     props.history.innerHTML +=`
         <div class="pastLine flex">
@@ -82,3 +112,4 @@ ${props.character.power} power  -   ${props.character.armor} armor  -   ${props.
         </div>
       </div> `
 }
+

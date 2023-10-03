@@ -11,7 +11,7 @@ export default function Home() {
   //USE STATE--------------------------------------------------------------------
   const [timeCurrent, setTimeCurrent] = useState('')
   const [timeStatic, setTimeStatic] = useState(new Date().toLocaleTimeString('en-US',{hour12: false}))
-  const [playerLocation, setPlayerLocation] = useState(0)
+  const [playerLocation, setPlayerLocation] = useState("")
   const [playerRouteArr, setPlayerRouteArr] = useState([
     [Math.floor(Math.random() * 1),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
     [Math.floor(Math.random() * 6),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
@@ -43,15 +43,16 @@ export default function Home() {
   }, []);
 
 
-  const sleep = (ms)=>{
+  const sleep = (ms:number)=>{
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
   //HANDLE INPUT-------------------------------------------------------------------------------
 
   const handleInput = async() =>{
-    const inputHistory = document.querySelector('.history')
-    const inputField = document.querySelector('#inputField')
+    const inputHistory = document.querySelector('.history')!
+    const inputField = document.querySelector('#inputField')!
+    
     const input = inputField.value
     inputField.value = ""
 
@@ -86,7 +87,7 @@ export default function Home() {
       }
       switch (selection) {
         case 0:
-          setPlayerLocation(3);
+          setPlayerLocation("Combat");
           // let enemyIndex = Math.floor(Math.random() * enemyArr.length)
           // let hold = enemyArr[enemyIndex]
           setEnemy(enemyArr[Math.floor(Math.random() * enemyArr.length)])
@@ -116,17 +117,15 @@ export default function Home() {
     }
 
     if(input == '/reset'){
-      setPlayerLocation(0)
+      setPlayerLocation("Menu")
       clearHistory()
     }
 
-    //case 0 = menu
-    //case 1 = intro
-    //case 2 = paths
+
     switch(playerLocation){
-      case 0:
+      case "Menu":
         if(input === "1"){
-          setPlayerLocation(1)
+          setPlayerLocation("Intro")
           clearHistory()
           
         }
@@ -148,9 +147,9 @@ export default function Home() {
           break;
         }
     
-      case 1:
+      case "Intro":
         component.Intro({time:timeStatic,history:inputHistory})
-        setPlayerLocation(2)
+        setPlayerLocation("Route")
         await sleep(2000)
         console.log('after sleep')
         console.log("inCase 1 with route",playerRouteArr[playerRouteIndex])
@@ -158,7 +157,7 @@ export default function Home() {
         console.log(playerRouteArr)
         break;
         
-      case 2:
+      case "Route":
         console.log("inside player location case 2", "input is", input)
         console.log(playerRouteArr)
         console.log(playerRouteArr[playerRouteIndex],playerRouteIndex, input-1)
@@ -173,7 +172,7 @@ export default function Home() {
           setplayerRouteIndex(playerRouteIndex+1)
           break;
         
-      case 3:
+      case "Combat":
         const didYouWin = {
           "1":3,
           "2":1,
@@ -188,7 +187,7 @@ export default function Home() {
           if(hero.alive() == false || enemy.alive() == false){
             if(hero.alive() == false){
               clearHistory()
-              setPlayerLocation(1)
+              setPlayerLocation("Intro")
               setplayerRouteIndex(0)
               setPlayerRouteArr([
                 [Math.floor(Math.random() * 1),Math.floor(Math.random() * 6),Math.floor(Math.random() * 6)],
@@ -209,6 +208,8 @@ export default function Home() {
               notMade("enemy died")
               hero.gold = hero.gold + enemy.gold
               setHero(hero)
+              setPlayerLocation("Route")
+              component.Paths({time:timeStatic,history:inputHistory,route:playerRouteArr[playerRouteIndex]})
             }
           }
           else{
@@ -222,7 +223,7 @@ export default function Home() {
         //Pre Combat screen------------------------------------
         if(!inCombat && input == 2) {
           console.log("flee selected")
-          setPlayerLocation(2)
+          setPlayerLocation("Route")
           component.Paths({time:timeStatic,history:inputHistory,route:playerRouteArr[playerRouteIndex]})
           break;
         }
@@ -261,24 +262,24 @@ export default function Home() {
         
         if(attacking == true){
           if(enemy.attack() == input){
-            console.log("tie")
             clearHistory()
+            component.CombatTie({time:timeStatic,history:inputHistory})
             combatLoop()
             break;
           }
           else if(enemy.attack() == didYouWin[input]){
             enemy.health = enemy.health - hero.power
             setEnemy(enemy)
-            console.log("youwin","enemyhealth",enemy.health, "damage",hero.power)
             clearHistory()
+            component.CombatAdv({time:timeStatic,history:inputHistory})
             combatLoop()
             break;
           }
           else if(enemy.attack() == didYouLose[input]){
             hero.health = hero.health - enemy.power
             setHero(hero)
-            console.log("you lose","playerhealth", hero.health, "damage", enemy.power)
             clearHistory()
+            component.CombatDAdv({time:timeStatic,history:inputHistory})
             combatLoop()
             break;
           }
@@ -288,18 +289,6 @@ export default function Home() {
           //   break;
           // }
         }
-
-        //COMBAT STARTS HERE--------------------------------------------
-        //get player data and enemy data
-        //give options of attack, use item* or flee
-        //if attack give option of planned, powerful or defensive attack
-        //opponient will then pick
-        //will then determin advantage, draw or disadvantage
-        //damage calculations
-        //alive check
-        //loop back to "attack, use item or flee" option or calculate reward
-        //go back to paths
-        //if flee also go back to paths
       default:
         console.error('player location is in unexpected area')
     }
